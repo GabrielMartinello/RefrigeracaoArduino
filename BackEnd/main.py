@@ -23,7 +23,7 @@ class Temperaturas(Resource):
         db.session.add(temp)
         db.session.commit()
         result = temperatura_schema.dump(temp)
-        return make_response(jsonify(result.data), 200)
+        return make_response(jsonify(result), 200)
 
     def put(self):
         temp = Temperatura.query.filter_by(id=request.json['id']).first()
@@ -46,9 +46,13 @@ class TemperaturaById(Resource):
         result = temperatura_schema.dump(temp)
         return make_response(jsonify(result), 200)     
     
+# class ChamaIndex(Resource):
+#     def get(self, id):
+#         return make_response(jsonify(result), 200)      
 
 api.add_resource(Temperaturas, '/temperatura') 
 api.add_resource(TemperaturaById, '/temperaturas/<id>') 
+# api.add.resource(ChamaIndex, '/route')
 
 if __name__ == '__main__':
     # run app in debug mode on port 5000
