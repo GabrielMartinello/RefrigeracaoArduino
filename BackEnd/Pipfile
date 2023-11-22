@@ -10,6 +10,13 @@ sqlalchemy = "*"
 psycopg2-binary = "*"
 python-dotenv = "*"
 pandas = "*"
+flask-sqlalchemy = "*"
+flask-marshmallow = "*"
+flask-restful = "*"
+flask-cors = "*"
+modal = "*"
+flask-jsonpify = "*"
+marshmallow-sqlalchemy = "*"
 
 [dev-packages]
 
