@@ -2,6 +2,7 @@
 #include <ESP8266WiFi.h>
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
+#include <functional>
 
 const char* ssid = "";
 const char* password = "";
@@ -37,6 +38,18 @@ void validaTemperatura(){
     digitalWrite(RELE_COOLER, LOW);
   }
 }
+void temperaturaUmidade(request,response){
+
+   const subscribersResponse = await fetch ("http://127.0.0.1:5000/temperatura")
+   const subscribersResponseJson = await subscribersResponse.json();
+   const temperaturaUmidade = subscribers ResponseJson.total_subscribers;
+
+   response.json{
+       temperatura: temperatura, 
+       umidade: umidade
+  }
+}
+
 // put function declarations here:
 int myFunction(int, int);
 
