@@ -9,6 +9,15 @@ const char* password = "";
 #define DHTPIN D1
 #define DHTTYPE DHT11
 
+#define WIFI_SSID "M79j112"
+#define WIFI_PASS "s33U4g41n"
+
+    //Esses são os pinos GPIO do ESP8266 usados ​​para o botão físico (BUTTON_PIN) e o relé (RELE_PIN).
+
+#define RELE_PIN 5
+#define RELE_COOLER 4
+
+
 DHT dht(DHTPIN, DHTTYPE);
 WiFiServer server(80);
 
@@ -23,9 +32,15 @@ String html = R"(
 int myFunction(int, int);
 
 void setup() {
-  IPAddress local_IP(192,168,1,169); //Manda um ip ai
-  IPAddress gateway(192,168,1,1);
+  IPAddress local_IP(192,168,2,123); //Manda um ip ai
+  IPAddress gateway(192,168,2,1);
   IPAddress subnet(255,255,255,0);
+
+  pinMode(RELE_PIN, OUTPUT);
+  pinMode(RELE_COOLER, OUTPUT);
+
+  digitalWrite(RELE_PIN, HIGH);
+  digitalWrite(RELE_COOLER, HIGH);
 
   Serial.begin(9600);
   dht.begin();
@@ -57,9 +72,12 @@ void setup() {
 void loop() {
   WiFiClient client = server.available();
 
-  if (!client) {
-    return;
-  }
+  digitalWrite(RELE_PIN, LOW);
+  digitalWrite(RELE_COOLER, HIGH);
+
+  // if (!client) {
+  //   return;
+  // }
 
   // Ler a primeira linha da solicitação (exemplo: GET /path HTTP/1.1)
   String request = client.readStringUntil('\r');
@@ -84,8 +102,6 @@ void loop() {
   
   delay(1);
   client.stop();
-
-
 }
 
 // put function definitions here:
