@@ -6,7 +6,7 @@
 const char* ssid = "";
 const char* password = "";
 
-#define DHTPIN D1
+#define DHTPIN D3
 #define DHTTYPE DHT11
 
 #define WIFI_SSID "M79j112"
@@ -28,6 +28,15 @@ String html = R"(
 </html>
 )";
 
+
+void validaTemperatura(){
+  if(dht.readTemperature() < 18){
+    digitalWrite(RELE_PIN, HIGH);
+  }
+  if(dht.readTemperature() >= 28){
+    digitalWrite(RELE_COOLER, LOW);
+  }
+}
 // put function declarations here:
 int myFunction(int, int);
 
@@ -87,6 +96,7 @@ void loop() {
   Serial.print("Umidade: "); Serial.println(h);
   Serial.print("Temperatura: "); Serial.println(t);
 
+  validaTemperatura();
   // Verificar se a solicitação é para "/get-data"
   if (request.indexOf("/get-data") != -1) {
       client.print("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n");
@@ -107,12 +117,4 @@ void loop() {
 // put function definitions here:
 int myFunction(int x, int y) {
   return x + y;
-}
-void validaTemperatura(){
-  if(dht.readTemperature() < 18){
-    digitalWrite(RELE_PIN, HIGH);
-  }
-  if(dht.readTemperature() >= 28){
-    digitalWrite(RELE_COOLER, LOW);
-  }
 }
