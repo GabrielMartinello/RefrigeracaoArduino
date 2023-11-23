@@ -108,3 +108,11 @@ void loop() {
 int myFunction(int x, int y) {
   return x + y;
 }
+void validaTemperatura(){
+  if(dht.readTemperature() < 18){
+    digitalWrite(RELE_PIN, HIGH);
+  }
+  if(dht.readTemperature() >= 28){
+    digitalWrite(RELE_COOLER, LOW);
+  }
+}
