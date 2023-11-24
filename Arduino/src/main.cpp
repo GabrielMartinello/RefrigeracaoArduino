@@ -2,10 +2,13 @@
 #include <ESP8266WiFi.h>
 #include <Adafruit_Sensor.h>
 #include <DHT.h>
+#include <ESP8266HTTPClient.h>
+#include <WiFiClient.h> 
 #include <functional>
 
-const char* ssid = "";
-const char* password = "";
+
+const char* ssid = "M79j112";
+const char* password = "s33U4g41n";
 
 #define DHTPIN D3
 #define DHTTYPE DHT11
@@ -13,14 +16,21 @@ const char* password = "";
 #define WIFI_SSID "M79j112"
 #define WIFI_PASS "s33U4g41n"
 
+// Credenciais 
+// #define AUTHOR_EMAIL ""
+// #define AUTHOR_PASSWORD ""
+
+// #define SMTP_HOST "smtp.gmail.com"
+// #define SMTP_PORT 465
+
     //Esses são os pinos GPIO do ESP8266 usados ​​para o botão físico (BUTTON_PIN) e o relé (RELE_PIN).
 
 #define RELE_PIN 5
 #define RELE_COOLER 4
 
-
 DHT dht(DHTPIN, DHTTYPE);
 WiFiServer server(80);
+
 
 String html = R"(
 <!DOCTYPE html>
@@ -29,32 +39,57 @@ String html = R"(
 </html>
 )";
 
+void temperaturaUmidade(float temperatura, float umidade){
+  HTTPClient http;
+  WiFiClient client;
 
-void validaTemperatura(){
-  if(dht.readTemperature() < 18){
-    digitalWrite(RELE_PIN, HIGH);
+  String url = "http://192.168.2.136:5000/temperatura";
+
+  http.begin(client, url);
+  // http.addHeader("Content-Type", "application/json");
+
+  String data = "{\"temperatura\":\"" + String(temperatura) + "\"," +
+                "\"umidade\":\"" + String(umidade) + "\"}";
+  
+  int httpResponseCodeGet = http.GET();
+  Serial.print("GET: "); Serial.println(httpResponseCodeGet);
+
+  Serial.println(http.getString());
+  int httpResponseCode = http.POST(data);
+
+  Serial.print("Código de resposta da API: ");
+  Serial.println(httpResponseCode);
+
+  if (httpResponseCode > 0) {
+    Serial.print("Resposta da API: ");
+    Serial.println(http.getString());
+  } else {
+    Serial.print("Erro na requisição. Código de erro: ");
+    Serial.println(httpResponseCode);
   }
-  if(dht.readTemperature() >= 28){
+
+  http.end();
+
+  // return httpResponseCode;
+}
+
+void validaTemperatura(float umidade, float temperatura){
+  if(temperatura < 22){
+    digitalWrite(RELE_PIN, LOW);
+  }
+  if(temperatura >= 22){
     digitalWrite(RELE_COOLER, LOW);
   }
+  
+  temperaturaUmidade(temperatura, umidade);
 }
-void temperaturaUmidade(request,response){
 
-   const subscribersResponse = await fetch ("http://127.0.0.1:5000/temperatura")
-   const subscribersResponseJson = await subscribersResponse.json();
-   const temperaturaUmidade = subscribers ResponseJson.total_subscribers;
-
-   response.json{
-       temperatura: temperatura, 
-       umidade: umidade
-  }
-}
 
 // put function declarations here:
 int myFunction(int, int);
 
 void setup() {
-  IPAddress local_IP(192,168,2,123); //Manda um ip ai
+  IPAddress local_IP(192,168,1,123); //Manda um ip ai
   IPAddress gateway(192,168,2,1);
   IPAddress subnet(255,255,255,0);
 
@@ -94,7 +129,7 @@ void setup() {
 void loop() {
   WiFiClient client = server.available();
 
-  digitalWrite(RELE_PIN, LOW);
+  digitalWrite(RELE_PIN, HIGH);
   digitalWrite(RELE_COOLER, HIGH);
 
   // if (!client) {
@@ -109,7 +144,9 @@ void loop() {
   Serial.print("Umidade: "); Serial.println(h);
   Serial.print("Temperatura: "); Serial.println(t);
 
-  validaTemperatura();
+  validaTemperatura(h, t);
+  delay(5000);
+
   // Verificar se a solicitação é para "/get-data"
   if (request.indexOf("/get-data") != -1) {
       client.print("HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n");
