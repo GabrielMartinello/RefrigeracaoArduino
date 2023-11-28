@@ -145,7 +145,7 @@ void loop() {
   Serial.print("Temperatura: "); Serial.println(t);
 
   validaTemperatura(h, t);
-  delay(5000);
+  delay(6000);
 
   // Verificar se a solicitação é para "/get-data"
   if (request.indexOf("/get-data") != -1) {

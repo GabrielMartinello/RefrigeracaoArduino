@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Krona+One&family=Montserrat:wght@400;600&display=swap');
 
 :root {
-    --cor-conteudo: #ECD6C4;
+    --cor-conteudo: #000000;
     --cor-hover: #2F2325;
     --fonte-primaria: 'Krona One', sans-serif;
     --fonte-secundaria: 'Montserrat', sans-serif;
@@ -14,7 +14,7 @@
 
 .conteudo {
     margin-bottom: 48px;
-    border-top: 0.4px solid #FFF2E7;
+    border-top: 0.4px solid #bd8b62;
 }
 
 .conteudo-secundario-titulo {
@@ -59,11 +59,19 @@ body {
 }
 
 .apresentacao__conteudo {
-    width: 50%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 40px;
 }
+
+.apresentacao__graficos {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 40px;
+}
+
 
 .apresentacao__conteudo__titulo {
     font-size: 2.25rem;
@@ -71,6 +79,8 @@ body {
 }
 
 .titulo-destaque {
+    display: flex;
+    align-content: center;
     color: var(--cor-conteudo);
 }
 
