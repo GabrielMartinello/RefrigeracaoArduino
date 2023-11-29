@@ -11,7 +11,9 @@ function montaDadosTable() {
             // Limpar e destruir a DataTable antes de adicionar novas linhas
             tabela = $('#table').DataTable()
 
+            //Salva a página para não sair dela ao recarregar
             paginaAtiva = tabela.page();
+
             console.log('Pag: ', paginaAtiva)
 
             tabela.clear();
@@ -27,10 +29,11 @@ function montaDadosTable() {
                     temp.data,
                     '<button id="botaoExcluir" class="myButton" onclick="excluirRegistro(' + temp.id + ')">Excluir</button>'
                 ]).draw();
-
+                
+                //Joga pra página que estava antes
                 tabela.page(paginaAtiva).draw(false)
             }
-            setTimeout(montaDadosTable, 10000);
+            setTimeout(montaDadosTable, 1000);
         }
     });
 
