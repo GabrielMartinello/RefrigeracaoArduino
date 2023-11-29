@@ -1,59 +1,67 @@
-montaDadosTable();
+$(document).ready(function() {
+    montaDadosTable();
+});
 
+function montaDadosTable() {
+    $.ajax({
+        url: 'http://localhost:5000/temperatura',
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            // Limpar o conteúdo da tabela antes de adicionar novas linhas
+            document.getElementById("tableBody").innerHTML = "";
+
+            // Adicionar as novas linhas
+            for (let i = 0; i < data.length; i++) {
+                var temp = data[i];
+
+                let row = document.createElement("tr");
+
+                let cel1 = document.createElement("td");
+                let cel2 = document.createElement("td");
+                let cel3 = document.createElement("td");
+                let cel4 = document.createElement("td");
+
+                cel1.innerText = temp.id;
+                cel3.innerText = temp.umidade;
+                cel4.innerText = temp.data;
+
+                let paragraph = document.createElement("p");
+                paragraph.innerText = temp.temperatura;
+
+                paragraph.classList.add("status");
+                if (temp.temperatura >= 25) {
+                    paragraph.classList.add("cancelled");
+                } else if (temp.temperatura >= 20 && temp.temperatura <= 24) {
+                    paragraph.classList.add("delivered");
+                } else if (temp.temperatura < 18) {
+                    paragraph.classList.add("shipped");
+                }
+
+                cel2.appendChild(paragraph);
+
+                row.appendChild(cel1);
+                row.appendChild(cel2);
+                row.appendChild(cel3);
+                row.appendChild(cel4);
+
+                document.getElementById("tableBody").appendChild(row);
+
+                console.log(temp.id);
+            }
+
+            // Defina um temporizador para reiniciar dinamicamente após 5 segundos (ajuste conforme necessário)
+            setTimeout(montaDadosTable, 30000);
+        }
+    });
+}
 const search = document.querySelector('.input-group input'),
-    table_rows = document.querySelectorAll('tbody tr'),
-    table_headings = document.querySelectorAll('thead th');
+table_rows = document.querySelectorAll('tbody tr'),
+table_headings = document.querySelectorAll('thead th');
 
 // 1. Searching for specific data of HTML table
 search.addEventListener('input', searchTable);
 
-function montaDadosTable() {
-    fetch('http://localhost:5000/temperatura').then(data => {
-        return data.json();
-    }).then(result => {
-        let table = document.getElementById("tableBody");
-
-        for(i =0; i < result.length; i++) {
-            var temp = result[i]
-
-            let row = document.createElement("tr")
-
-            let cel1 = document.createElement("td");
-            let cel2 = document.createElement("td");
-            let cel3 = document.createElement("td");
-            let cel4 = document.createElement("td");
-
-            cel1.innerText = temp.id
-            cel3.innerText = temp.umidade
-            cel4.innerText = temp.data
-
-            let paragraph = document.createElement("p");
-            paragraph.innerText = temp.temperatura;
-
-            paragraph.classList.add("status")
-            if(temp.temperatura >= 25) {
-                paragraph.classList.add("cancelled")
-            } else if(temp.temperatura >= 20 && temp.temperatura <= 24) {
-                paragraph.classList.add("delivered")
-            } else if (temp.temperatura < 18) {
-                paragraph.classList.add("shipped")
-            }
-
-            // Adicionar o elemento <p> à cel2
-            cel2.appendChild(paragraph);
-
-            row.appendChild(cel1);
-            row.appendChild(cel2);
-            row.appendChild(cel3);
-            row.appendChild(cel4);
-          
-            table.appendChild(row)
-            
-            console.log(temp.id)
-
-        }
-    })
-}
 
 function searchTable() {
     table_rows.forEach((row, i) => {
