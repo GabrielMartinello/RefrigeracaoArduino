@@ -13,3 +13,4 @@ pipenv requirements > requirements.txt
 #OBS: Instale o postgres na sua máquina pra testar o projeto
 pipenv install  psycopg2
 pipenv install python-dotenv
+pip install Flask-Mail
