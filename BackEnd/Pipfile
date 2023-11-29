@@ -17,6 +17,7 @@ flask-cors = "*"
 modal = "*"
 flask-jsonpify = "*"
 marshmallow-sqlalchemy = "*"
+flask-mail = "*"
 
 [dev-packages]
 

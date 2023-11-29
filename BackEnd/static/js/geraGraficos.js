@@ -10,9 +10,7 @@ function reiniciarPaginaDinamicamente() {
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-            console.log('Página atualizada: ', data)
 
-            // Defina um temporizador para reiniciar dinamicamente após 5 segundos (ajuste conforme necessário)
             setTimeout(reiniciarPaginaDinamicamente, 1000);
         }
     }).then(result => {
@@ -31,7 +29,6 @@ function drawChart(result) {
         valores.push([temp.data, Number(temp.temperatura)])
     }
     
-    console.log(valores)
     const options = {
         title: 'Temperaturas'
     };
@@ -51,14 +48,6 @@ function drawChart(result) {
     }
 
     const dataGraphObjects = google.visualization.arrayToDataTable(valoresDataGraph)
-
-    // var dataGraph =  google.visualization.arrayToDataTable([
-    //     ['Dia', 'Temperatura Média', 'Temperatura Máxima'],
-    //     ['24/09/2023',  22,      28],
-    //     ['25/09/2023',  21,      26],
-    //     ['27/10/2023',  22,      29],
-    //     ['24/11/2023',  25,      31]
-    //   ]);
 
     var options2 =  {
         title: 'Gráfico de crescimento de temperaturas',
