@@ -8,14 +8,14 @@
 #include <ArduinoJson.h>
 
 
-const char* ssid = "Alini";
-const char* password = "35178989";
+const char* ssid = "Prof.Rafael";
+const char* password = "senhasenha";
 
 #define DHTPIN D3
 #define DHTTYPE DHT11
 
-#define WIFI_SSID "Alini"
-#define WIFI_PASS "35178989"
+#define WIFI_SSID "Prof.Rafael"
+#define WIFI_PASS "senhasenha"
 
 #define RELE_PIN 5
 #define RELE_COOLER 4
@@ -27,7 +27,7 @@ void temperaturaUmidade(float temperatura, float umidade){
   HTTPClient http;
   WiFiClient client;
 
-  String url = "http://192.168.2.114:5000/temperatura";
+  String url = "http://192.168.152.21:5000/temperatura";
 
   http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
@@ -60,7 +60,7 @@ void temperaturaUmidade(float temperatura, float umidade){
 
 void validaTemperatura(float umidade, float temperatura){
   if(temperatura < 22){
-    digitalWrite(RELE_PIN, LOW);
+    digitalWrite(RELE_PIN, HIGH);
   }
   if(temperatura >= 22){
     digitalWrite(RELE_COOLER, LOW);
@@ -74,14 +74,14 @@ void validaTemperatura(float umidade, float temperatura){
 int myFunction(int, int);
 
 void setup() {
-  IPAddress local_IP(192,168,1,123); //Manda um ip ai
-  IPAddress gateway(192,168,2,1);
+  IPAddress local_IP(192,168,152,32); //Manda um ip ai
+  IPAddress gateway(192,168,1,1);
   IPAddress subnet(255,255,255,0);
 
   pinMode(RELE_PIN, OUTPUT);
   pinMode(RELE_COOLER, OUTPUT);
 
-  digitalWrite(RELE_PIN, HIGH);
+  digitalWrite(RELE_PIN, LOW);
   digitalWrite(RELE_COOLER, HIGH);
 
   Serial.begin(9600);
@@ -114,7 +114,7 @@ void setup() {
 void loop() {
   WiFiClient client = server.available();
 
-  digitalWrite(RELE_PIN, HIGH);
+  digitalWrite(RELE_PIN, LOW);
   digitalWrite(RELE_COOLER, HIGH);
 
   String request = client.readStringUntil('\r');
