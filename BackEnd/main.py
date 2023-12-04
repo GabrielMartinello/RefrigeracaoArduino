@@ -30,15 +30,6 @@ class Temperaturas(Resource):
         db.session.commit()
         result = temperatura_schema.dump(temp)
         return make_response(jsonify(result), 200)
-
-    def put(self):
-        temp = Temperatura.query.filter_by(id=request.json['id']).first()
-        temp.temperatura = request.json['temperatura']
-        temp.umidade = request.json['umidade']
-        db.session.add(temp)
-        db.session.commit()
-        result = temperatura_schema.dump(temp)
-        return make_response(jsonify(result), 200) 
     
 class TemperaturaById(Resource):
     def delete(self, id):
